@@ -1,0 +1,60 @@
+# Server Scripts Manifest - Example
+# This demonstrates the YAML schema used by ssc.sh
+#
+# Schema Documentation: docs/MANIFEST_SCHEMA.md
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  generated: "2026-01-01T12:00:00+01:00"
+  generator: "generate-manifest.sh"
+  total_scripts: 4
+  with_frontmatter: 4
+
+# Categories organize scripts by purpose
+categories:
+  operations:
+    description: "Maintenance, Validation & Backup Scripts"
+    path: "scripts/operations/"
+  monitoring:
+    description: "Health Check & Monitoring Scripts"
+    path: "scripts/monitoring/"
+
+# Script Registry
+# Each script entry contains metadata extracted from YAML front-matter
+scripts:
+  backup-example:
+    path: "examples/demo-scripts/backup-example.sh"
+    category: "operations"
+    deployment: scheduled
+    service: none
+    status: active
+    type: backup
+    requires_root: true
+
+  monitoring-example:
+    path: "examples/demo-scripts/monitoring-example.sh"
+    category: "monitoring"
+    deployment: manual
+    service: none
+    status: active
+    type: monitoring
+    requires_root: false
+
+  health-check:
+    path: "examples/demo-scripts/health-check.sh"
+    category: "monitoring"
+    deployment: automated
+    service: health-check.service
+    status: active
+    type: validation
+    requires_root: false
+
+  deploy-example:
+    path: "examples/demo-scripts/deploy-example.sh"
+    category: "operations"
+    deployment: manual
+    service: none
+    status: active
+    type: automation
+    requires_root: true
