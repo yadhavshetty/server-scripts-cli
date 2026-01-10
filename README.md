@@ -1,5 +1,9 @@
 # Server Scripts CLI (ssc)
 
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Bash](https://img.shields.io/badge/Bash-4.0%2B-blue?logo=gnu-bash)
+![YAML](https://img.shields.io/badge/Config-YAML-orange)
+
 **YAML-based script management for shell and Python scripts**
 
 Manage hundreds of scripts with a unified CLI: discover, execute, monitor, and validate via YAML manifest.
