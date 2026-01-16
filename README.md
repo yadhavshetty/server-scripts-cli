@@ -19,10 +19,12 @@ This documentation uses `ssc` throughout for brevity.
 ## Features
 
 - **YAML Manifest-Based**: Auto-discover scripts via YAML front-matter extraction
+- **4-Tier Type System**: Organize scripts by usage pattern (Interactive, One-time, Background, Internal)
+- **Smart Defaults**: Shows only interactive scripts by default, use `--all` for complete list
 - **Unified Interface**: Single CLI for list, run, info, status, logs, validate
 - **systemd Integration**: Query service status, timers, and journalctl logs
 - **Security**: Input validation, safe execution, requires_root detection
-- **Filtering**: Category, type, status filters + search functionality
+- **Advanced Filtering**: Category, type, status filters + search functionality
 - **Zero Framework Lock-in**: Pure Bash + yq, no Python/Node dependencies
 
 ## Quick Start
@@ -79,7 +81,8 @@ All options install the command as `ssc` for consistency.
 
 | Command | Purpose |
 |---------|---------|
-| `ssc list` | List scripts with filters (category, type, status) |
+| `ssc list` | List scripts with filters (shows Interactive types by default) |
+| `ssc list --all` | Show complete script list (all types) |
 | `ssc run <name>` | Execute script by name |
 | `ssc info <name>` | Show detailed script metadata |
 | `ssc status` | Query systemd service status |
@@ -97,7 +100,7 @@ Add metadata to your scripts:
 # deployment: manual
 # service: backup.service
 # status: active
-# type: backup
+# type: admin
 # requires_root: true
 # ---
 #

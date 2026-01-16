@@ -72,7 +72,7 @@ scripts:
     deployment: scheduled
     service: none
     status: active
-    type: backup
+    type: admin
     requires_root: true
 ```
 
@@ -103,19 +103,42 @@ scripts:
 
 ### type
 
+Scripts are organized into a **4-Tier Hierarchy**:
+
+**Tier 1 - Interactive** (shown by default):
+
 | Value | Description |
 |-------|-------------|
-| `automation` | Workflow automation |
-| `backup` | Backup/restore operations |
-| `cli-tool` | Command-line utility |
-| `daemon` | Long-running service |
-| `helper` | Helper/utility script |
-| `library` | Sourced library (not executed) |
-| `maintenance` | System maintenance |
-| `monitoring` | Health check/monitoring |
-| `security` | Security-related script |
-| `setup` | Installation/setup |
-| `validation` | Validation/testing |
+| `report` | Status/summary reports |
+| `admin` | Regular admin tools (maintenance, sync, restart) |
+| `diagnostic` | Debug/troubleshooting/analysis |
+| `check` | Validation/health-checks |
+| `orchestrator` | Multi-script coordinators |
+
+**Tier 2 - One-time** (use `--all` or `--type`):
+
+| Value | Description |
+|-------|-------------|
+| `deploy` | Deployment scripts |
+| `setup` | Setup/installation |
+| `migration` | Data migrations |
+| `generator` | File generators |
+| `benchmark` | Performance testing |
+
+**Tier 3 - Background** (use `--all` or `--type`):
+
+| Value | Description |
+|-------|-------------|
+| `daemon` | systemd services (long-running) |
+| `scheduled` | Timer-based scripts |
+| `exporter` | Prometheus exporters |
+
+**Tier 4 - Internal** (use `--all` or `--type`):
+
+| Value | Description |
+|-------|-------------|
+| `library` | Sourced by scripts |
+| `helper` | Called by scripts |
 
 ### status
 
@@ -148,7 +171,7 @@ Add to your scripts (between `# ---` markers):
 # deployment: manual
 # service: backup.service
 # status: active
-# type: backup
+# type: admin
 # requires_root: true
 # ---
 #

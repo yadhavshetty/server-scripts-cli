@@ -17,13 +17,15 @@
 #   ssc logs <script-name>        # Show service logs
 #
 # Documentation: docs/SETUP.md
-# Version: 1.0.0
-# Created: 2026-01-01
+# Version: 1.1.0
+# Created: 2026-01-02
+# Updated: 2026-01-16
 
 set -uo pipefail
 
 # ===== Configuration =====
-readonly VERSION="1.0.0"
+readonly VERSION="1.1.0"
+readonly INTERACTIVE_TYPES="report admin diagnostic check orchestrator"
 readonly SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 # REPO_ROOT: Try git first, fallback to script directory
 if REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"; then
@@ -121,11 +123,16 @@ cmd_list() {
     local filter_type=""
     local search_term=""
     local show_paths=false
+    local show_all=false
     local limit=0
 
     # Parse arguments
     while [[ $# -gt 0 ]]; do
         case "$1" in
+            -a|--all)
+                show_all=true
+                shift
+                ;;
             -c|--category)
                 filter_category="$2"
                 shift 2
@@ -136,6 +143,7 @@ cmd_list() {
                 ;;
             -t|--type)
                 filter_type="$2"
+                show_all=true  # --type implies --all
                 shift 2
                 ;;
             -p|--paths)
@@ -154,18 +162,51 @@ cmd_list() {
                 cat << EOF
 ${BOLD}ssc list${NC} - List scripts in manifest
 
+${BOLD}USAGE:${NC}
+    ssc list [OPTIONS]
+
+${BOLD}DEFAULT BEHAVIOR:${NC}
+    By default, shows only ${GREEN}Interactive${NC} scripts (Tier 1).
+    Use ${BOLD}--all${NC} to show complete list including libraries, helpers, daemons.
+
 ${BOLD}OPTIONS:${NC}
-    -c, --category <name>   Filter by category (production, operations, etc.)
+    -a, --all               Show ALL scripts (default: only interactive)
+    -c, --category <name>   Filter by category
     -s, --status <status>   Filter by status (active, deprecated, unknown)
-    -t, --type <type>       Filter by type (cli-tool, library, helper, daemon)
+    -t, --type <type>       Filter by type (activates --all automatically)
     -p, --paths             Show full paths instead of names
     -n, --limit <num>       Limit output to N scripts
     --search <term>         Search scripts by name
 
+${BOLD}SCRIPT TYPES:${NC}
+    ${GREEN}Tier 1 - Interactive (default shown):${NC}
+      report        Status/summary reports
+      admin         Regular admin tools
+      diagnostic    Debug/troubleshooting
+      check         Validation/health-checks
+      orchestrator  Multi-script coordinators
+
+    ${YELLOW}Tier 2 - One-time (use --all or --type):${NC}
+      deploy        Deployment scripts
+      setup         Setup/installation
+      migration     Data migrations
+      generator     File generators
+      benchmark     Performance testing
+
+    ${CYAN}Tier 3 - Background (use --all or --type):${NC}
+      daemon        systemd services
+      scheduled     Timer-based scripts
+      exporter      Prometheus exporters
+
+    ${MAGENTA}Tier 4 - Internal (use --all or --type):${NC}
+      library       Sourced by scripts
+      helper        Called by scripts
+
 ${BOLD}EXAMPLES:${NC}
-    ssc list --status active
-    ssc list --category production --type library
-    ssc list --search backup
+    ssc list                    # Interactive scripts only
+    ssc list --all              # Show complete list
+    ssc list --type check       # Show all validation scripts
+    ssc list --search backup    # Search for backup scripts
 EOF
                 return 0
                 ;;
@@ -199,6 +240,18 @@ EOF
         [[ -n "$filter_category" && "$category" != "$filter_category" ]] && continue
         [[ -n "$search_term"     && "${name,,}" != *"${search_term,,}"* ]] && continue
 
+        # Default filter: only show Interactive types (Tier 1) unless --all
+        if [[ "$show_all" == "false" ]]; then
+            local is_interactive=false
+            for interactive_type in $INTERACTIVE_TYPES; do
+                if [[ "$type" == "$interactive_type" ]]; then
+                    is_interactive=true
+                    break
+                fi
+            done
+            [[ "$is_interactive" == "false" ]] && continue
+        fi
+
         # Apply limit
         if [[ $limit -gt 0 && $count -ge $limit ]]; then
             break
@@ -212,13 +265,19 @@ EOF
             unknown) status_color="$DIM" ;;
         esac
 
-        # Color-code type
+        # Color-code type (by tier)
         local type_color="$NC"
         case "$type" in
-            library) type_color="$CYAN" ;;
-            helper) type_color="$MAGENTA" ;;
-            cli-tool) type_color="$BLUE" ;;
-            daemon) type_color="$YELLOW" ;;
+            # Tier 1 - Interactive (Green)
+            report|admin|diagnostic|check|orchestrator) type_color="$GREEN" ;;
+            # Tier 2 - One-time (Yellow)
+            deploy|setup|migration|generator|benchmark) type_color="$YELLOW" ;;
+            # Tier 3 - Background (Cyan)
+            daemon|scheduled|exporter) type_color="$CYAN" ;;
+            # Tier 4 - Internal (Magenta)
+            library|helper) type_color="$MAGENTA" ;;
+            # Legacy/Unknown (Blue)
+            cli-tool|*) type_color="$BLUE" ;;
         esac
 
         if [[ "$show_paths" == "true" ]]; then
@@ -234,7 +293,11 @@ EOF
     echo ""
     local total
     total=$(yq '.scripts | length' "$MANIFEST_FILE")
-    print_info "Showing: $count scripts (Total in manifest: $total)"
+    if [[ "$show_all" == "false" ]]; then
+        print_info "Showing: $count interactive scripts (Total: $total, use --all for complete list)"
+    else
+        print_info "Showing: $count scripts (Total in manifest: $total)"
+    fi
 }
 
 # ===== Command: run =====

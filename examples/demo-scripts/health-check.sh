@@ -6,7 +6,7 @@
 # deployment: automated
 # service: health-check.service
 # status: active
-# type: validation
+# type: check
 # requires_root: false
 # ---
 #

@@ -6,7 +6,7 @@
 # deployment: manual
 # service: none
 # status: active
-# type: automation
+# type: deploy
 # requires_root: true
 # ---
 #

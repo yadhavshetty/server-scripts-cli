@@ -13,7 +13,7 @@
 #
 # Documentation: docs/MANIFEST_SCHEMA.md
 # Version: 1.0.0
-# Created: 2026-01-01
+# Created: 2026-01-02
 
 set -uo pipefail
 

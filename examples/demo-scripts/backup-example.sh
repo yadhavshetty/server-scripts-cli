@@ -6,7 +6,7 @@
 # deployment: scheduled
 # service: none
 # status: active
-# type: backup
+# type: admin
 # requires_root: true
 # ---
 #

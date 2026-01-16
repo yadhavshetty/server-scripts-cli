@@ -6,7 +6,7 @@
 # deployment: manual
 # service: none
 # status: active
-# type: monitoring
+# type: check
 # requires_root: false
 # ---
 #

@@ -5,9 +5,9 @@
 # Version: 1.0.0
 
 metadata:
-  version: "1.0.0"
-  generated: "2026-01-01T12:00:00+01:00"
-  generator: "generate-manifest.sh"
+  version: "1.1.0"
+  generated: "2026-01-16T12:00:00+01:00"
+  generator: "manual"
   total_scripts: 4
   with_frontmatter: 4
 
@@ -29,7 +29,7 @@ scripts:
     deployment: scheduled
     service: none
     status: active
-    type: backup
+    type: admin
     requires_root: true
 
   monitoring-example:
@@ -38,7 +38,7 @@ scripts:
     deployment: manual
     service: none
     status: active
-    type: monitoring
+    type: check
     requires_root: false
 
   health-check:
@@ -47,7 +47,7 @@ scripts:
     deployment: automated
     service: health-check.service
     status: active
-    type: validation
+    type: check
     requires_root: false
 
   deploy-example:
@@ -56,5 +56,5 @@ scripts:
     deployment: manual
     service: none
     status: active
-    type: automation
+    type: deploy
     requires_root: true
