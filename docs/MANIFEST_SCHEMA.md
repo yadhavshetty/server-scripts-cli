@@ -140,6 +140,33 @@ Scripts are organized into a **4-Tier Hierarchy**:
 | `library` | Sourced by scripts |
 | `helper` | Called by scripts |
 
+### Deprecated Types
+
+The following types are **deprecated** and will be auto-migrated by `generate-manifest.sh`:
+
+| Deprecated Value | Migration Target | Note |
+|-----------------|------------------|------|
+| `cli-tool` | `admin` | Use `deployment: cli-tool` field instead (see Deployment section) |
+
+**Migration Behavior**: If `generate-manifest.sh` encounters `type: cli-tool` in a script's YAML frontmatter, it will:
+1. Auto-migrate to `type: admin`
+2. Print a warning with migration instructions
+3. Continue processing (non-breaking)
+
+**Example**:
+```yaml
+# ❌ Old (deprecated)
+# ---
+# type: cli-tool
+# ---
+
+# ✅ New (recommended)
+# ---
+# type: admin
+# deployment: cli-tool  # If script is interactive CLI tool
+# ---
+```
+
 ### status
 
 | Value | Description |

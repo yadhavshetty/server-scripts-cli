@@ -715,7 +715,7 @@ ${BOLD}COMMANDS:${NC}
 ${BOLD}LIST OPTIONS:${NC}
     -c, --category <name>   Filter by category (production, operations, etc.)
     -s, --status <status>   Filter by status (active, deprecated, unknown)
-    -t, --type <type>       Filter by type (cli-tool, library, helper, daemon)
+    -t, --type <type>       Filter by type (admin, report, diagnostic, library, helper, daemon)
     -p, --paths             Show full paths
     -n, --limit <num>       Limit output
     --search <term>         Search by name

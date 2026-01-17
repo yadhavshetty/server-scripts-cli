@@ -12,7 +12,7 @@
 #   ./generate-manifest.sh --verbose    # Show progress
 #
 # Documentation: docs/MANIFEST_SCHEMA.md
-# Version: 1.0.0
+# Version: 1.1.1
 # Created: 2026-01-02
 
 set -uo pipefail
@@ -27,7 +27,7 @@ else
     readonly REPO_ROOT="$SCRIPT_DIR"
 fi
 readonly MANIFEST_FILE="${REPO_ROOT}/manifest.yaml"
-readonly VERSION="1.0.0"
+readonly VERSION="1.1.1"
 
 # ===== Options =====
 DRY_RUN=false
@@ -201,16 +201,25 @@ generate_script_entry() {
     if [[ -n "$frontmatter" ]]; then
         deployment=$(parse_yaml_field "$frontmatter" "deployment" "manual")
         status=$(parse_yaml_field "$frontmatter" "status" "active")
-        type=$(parse_yaml_field "$frontmatter" "type" "cli-tool")
+        type=$(parse_yaml_field "$frontmatter" "type" "admin")
         requires_root=$(parse_yaml_field "$frontmatter" "requires_root" "false")
         service=$(parse_yaml_field "$frontmatter" "service" "none")
     else
         # Defaults for scripts without front-matter
         deployment="manual"
         status="active"
-        type="cli-tool"
+        type="admin"
         requires_root="false"
         service="none"
+    fi
+
+    # Auto-migrate deprecated cli-tool type
+    if [[ "$type" == "cli-tool" ]]; then
+        local script_file="${script_path##*/}"
+        print_warning "Script ${script_file}: type 'cli-tool' is deprecated, auto-migrating to 'admin'"
+        print_info "  → Update YAML frontmatter: type: admin"
+        print_info "  → Or use deployment field: deployment: cli-tool"
+        type="admin"
     fi
 
     # Generate YAML entry
@@ -240,7 +249,23 @@ generate_manifest() {
     local frontmatter_count=0
     local script_list=()
 
-    print_info "Scanning scripts directory..."
+    # Detect script directory (priority: scripts/ → examples/demo-scripts/)
+    readonly SCRIPT_DIRECTORIES=("scripts" "examples/demo-scripts")
+    local SCAN_DIR=""
+
+    for dir in "${SCRIPT_DIRECTORIES[@]}"; do
+        if [[ -d "${REPO_ROOT}/${dir}" ]]; then
+            SCAN_DIR="${REPO_ROOT}/${dir}"
+            print_info "Scanning ${dir}/ directory..."
+            break
+        fi
+    done
+
+    if [[ -z "$SCAN_DIR" ]]; then
+        print_error "No script directories found"
+        print_info "Expected: scripts/ or examples/demo-scripts/"
+        return 1
+    fi
 
     # Find all scripts (excluding hidden, .venv, node_modules, etc.)
     while IFS= read -r script_path; do
@@ -253,7 +278,7 @@ generate_manifest() {
         fi
 
         print_verbose "Found: ${script_path#${REPO_ROOT}/}"
-    done < <(find "${REPO_ROOT}/scripts" -type f \( -name "*.sh" -o -name "*.py" \) \
+    done < <(find "$SCAN_DIR" -type f \( -name "*.sh" -o -name "*.py" \) \
         ! -name "__init__.py" \
         ! -path "*/.venv/*" \
         ! -path "*/venv/*" \
@@ -262,8 +287,8 @@ generate_manifest() {
         2>/dev/null | sort)
 
     if [[ $script_count -eq 0 ]]; then
-        print_warning "No scripts found in ${REPO_ROOT}/scripts/"
-        print_info "Create scripts/ directory and add some .sh or .py files"
+        print_warning "No scripts found in ${SCAN_DIR}"
+        print_info "Add some .sh or .py files to the scripts directory"
         return 1
     fi
 
